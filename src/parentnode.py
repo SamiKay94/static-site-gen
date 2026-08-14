@@ -8,9 +8,9 @@ class ParentNode(HTMLNode):
         self.props = props
 
     def to_html(self):
-        if self.tag == "":
+        if self.tag == "" or self.tag is None:
             raise ValueError("no tag provided")
-        if self.children == []:
+        if self.children == [] or self.children is None:
             raise ValueError("no children provided")
 
         children_html = ""
