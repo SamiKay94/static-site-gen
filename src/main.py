@@ -1,16 +1,23 @@
-from inline_markdown import split_nodes_image
-from textnode import TextNode, TextType
+import os
+import shutil
+
+from copystatic import copy_files_recursive
+from generate_page import generate_page
+
+dir_path_static = "./static"
+dir_path_public = "./public"
 
 
-def main():
-    node = TextNode("This is some anchor text", TextType.LINK, "https://boot.dev")
-    print(node)
+def main() -> None:
+    print("Deleting public directory...")
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
 
-    node = TextNode(
-            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
-            TextType.TEXT,
-        )
+    print("Copying static files to public directory...")
+    copy_files_recursive(dir_path_static, dir_path_public)
 
-    print(split_nodes_image([node]))
+    print("Generating page...")
+    generate_page("content/index.md", "template.html", "public/index.html")
+
 
 main()
